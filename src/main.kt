@@ -1,6 +1,7 @@
 package myFirstAkkaKotlin
 import akka.actor.ActorSystem
 import akka.actor.Props
+import scala.Serializable
 
 
 /**
@@ -10,24 +11,33 @@ fun main(args: Array<String>) {
     println("Hello Kotlin!")
     val actorSystem = ActorSystem.create("mine")
 
-    val ref = actorSystem.actorOf(Props.create(MyActor::class.java),"hi")
-    ref.tell(1,null)
-    ref.tell(5,null)
-    Thread.sleep(5000)
+    val ref = actorSystem.actorOf(Props.create(MyActor::class.java,4), "hi")
+    //val ref = actorSystem.actorOf(Props.create({ MyActor(4)}), "hi")
+    ref.tell("1", null)
+    Thread.sleep(100)
+    ref.tell(1, null)
+    Thread.sleep(100)
+    ref.tell(MyMessage(1), null)
+    Thread.sleep(100)
+    actorSystem.shutdown()
     actorSystem.awaitTermination()
 }
 
-fun MakeActor( multi: Int ) : () -> MyActor {
-    val clo = multi
-   return { MyActor() }
+class MyMessage(val number: Int) : Serializable {
+    override fun toString(): String {
+        return "number: ${number.toString()}"
+    }
 }
 
-class MyActor : akka.actor.UntypedActor() {
+class MyActor(val factor: Int) : akka.actor.UntypedActor() {
     override fun onReceive(message: Any?): Unit {
+        println("Received ${message?.javaClass?.toGenericString()} ${message?.toString()}")
         if (message is String) {
             println(message)
         } else if (message is Int) {
-            self.tell((message * 5).toString(), sender)
+            self.tell((message * factor).toString(), sender)
+        } else if (message is MyMessage) {
+            self.tell(message.number * factor, sender)
         }
     }
 }

@@ -11,19 +11,24 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/akka-2.4.1/lib/akka/akka-actor_2.11-2.4.1.jar!/" />
+          <root url="file://$USER_HOME$/akka-2.4.1/lib" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
+        <jarDirectory url="file://$USER_HOME$/akka-2.4.1/lib" recursive="false" />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/akka-2.4.1/lib/akka/akka-kernel_2.11-2.4.1.jar!/" />
+          <root url="file://$USER_HOME$/akka-2.4.1/lib/akka" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="file://$USER_HOME$/akka-2.4.1/lib/akka" />
+        </SOURCES>
+        <jarDirectory url="file://$USER_HOME$/akka-2.4.1/lib/akka" recursive="false" />
+        <jarDirectory url="file://$USER_HOME$/akka-2.4.1/lib/akka" recursive="false" type="SOURCES" />
       </library>
     </orderEntry>
   </component>
