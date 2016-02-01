@@ -1,6 +1,6 @@
-package myFirstAkkaKotlin
 import akka.actor.ActorSystem
 import akka.actor.Props
+import akka.actor.UntypedActor
 import scala.Serializable
 
 
@@ -19,8 +19,9 @@ fun main(args: Array<String>) {
     Thread.sleep(100)
     ref.tell(MyMessage(1), null)
     Thread.sleep(100)
-    actorSystem.shutdown()
-    actorSystem.awaitTermination()
+    val future = actorSystem.terminate()
+    while(!future.isCompleted)
+        Thread.sleep(1)
 }
 
 class MyMessage(val number: Int) : Serializable {
@@ -29,7 +30,7 @@ class MyMessage(val number: Int) : Serializable {
     }
 }
 
-class MyActor(val factor: Int) : akka.actor.UntypedActor() {
+class MyActor(val factor: Int) : UntypedActor() {
     override fun onReceive(message: Any?): Unit {
         println("Received ${message?.javaClass?.toGenericString()} ${message?.toString()}")
         if (message is String) {
